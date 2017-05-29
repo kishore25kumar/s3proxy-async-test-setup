@@ -10,10 +10,10 @@ import java.util.Date;
 public class Main {
 //    private static final String RESULTS_BUCKET = "battula-results";
     private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
-    private static final String TEST_START_TIME = SDF.format(new Date(System.currentTimeMillis()));
+//    private static final long TEST_START_TIME = SDF.format(new Date(System.currentTimeMillis()));
+    private static final long TEST_START_TIME = System.currentTimeMillis();
     public static void main(String[] args)
             throws InterruptedException {
-        Thread.sleep(5 * 1000);
         final int iterations = EnvironmentManager.getIterations();
         final int threads = EnvironmentManager.getThreads();
         final long[][] totalTimes = new long[threads][iterations];
@@ -25,6 +25,8 @@ public class Main {
                 testUnits[i] = new Thread(new S3DownloadTest(iterations, totalTimes, errorsCount, i));
             } else if ("upload".equals(testType)) {
                 testUnits[i] = new Thread(new AzureUploadTest(iterations, totalTimes, errorsCount, i));
+            } else {
+                System.exit(1);
             }
         }
 
@@ -45,6 +47,7 @@ public class Main {
                                        final int threads,
                                        final long[][] totalTimes,
                                        final int[] errorsCount) {
+        final long testEndTime = System.currentTimeMillis();
         final long[] totalTimesSingleArray = new long[iterations * threads];
         long totalTime = 0;
         for (int i = 0 ; i < threads; i += 1) {
@@ -62,15 +65,17 @@ public class Main {
         // all indexes.
         // -1 because indexes start from 0
         final int ninty_nine_percentile_index = (int) Math.round((totalIterations * 99) / 100.0) + totalErrors - 1;
+        final double latency = (totalIterations / ((testEndTime - TEST_START_TIME) * 1.0)) * 1000;
 
         final StringBuilder response = new StringBuilder();
-        response.append("Start time: " + TEST_START_TIME + "\n");
+        response.append("Start time: " + SDF.format(new Date(TEST_START_TIME)) + "\n");
         response.append("End time: " + SDF.format(new Date(System.currentTimeMillis())) + "\n");
         response.append("Total time: " + totalTime + "\n");
         response.append("total iterations: " + totalIterations + "\n");
         response.append("ninty nine percentile index: " + ninty_nine_percentile_index + "\n");
         response.append("average: " + avg + "\n");
         response.append("99%tile: " + totalTimesSingleArray[ninty_nine_percentile_index] + "\n");
+        response.append("latency: " + latency + "\n");
         response.append("Errors: " + totalErrors + "\n");
         System.out.println(response);
 //        uploadResult(response.toString(), iterations, threads);
