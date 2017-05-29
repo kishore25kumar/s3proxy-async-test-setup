@@ -84,3 +84,8 @@ average: 1254.7
 latency: 0.7672830507174097
 Errors: 0
 ```
+
+### Note
+
+* I ran both the test runner and s3proxy in the same VM and same region as storage account.
+* It will take around 30-40 minutes for http async library implementation and 60 minutes for output stream implementation.
