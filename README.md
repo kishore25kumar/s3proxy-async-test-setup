@@ -3,11 +3,12 @@
 ## Jars explanation
 You will find 3 jars in jars folder.
 
-**test-runner.jar** - This is used for downloading files in parallel using multiple threads. This is also used for populating the files for testing.
+**test-runner.jar** - This is used for downloading files in parallel using multiple threads. This is also used for populating the files for testing. The code for this jar is the current repository.
 
-**outputstream-s3proxy.jar** - This is s3 proxy with output stream implementation.
+**outputstream-s3proxy.jar** - This is s3 proxy with output stream implementation. s3proxy git repo: https://github.com/kishore25kumar/s3proxy/tree/async-output-stream.
 
-**httpasync-s3proxy.jar** - This is s3 proxy with http async library implementation.
+
+**httpasync-s3proxy.jar** - This is s3 proxy with http async library implementation. s3proxy git repo: https://github.com/kishore25kumar/s3proxy/tree/async-http-lib. Jclouds repo: https://github.com/SpandanThakur/jclouds/tree/multipart-api 
 
 ### Prerequisites:
 Data has to be populated into azure bucket. This can be done through test runner.
