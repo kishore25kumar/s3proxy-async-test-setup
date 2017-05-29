@@ -25,10 +25,6 @@ public class S3DownloadTest implements Runnable {
         this.errorsCount[unitNumber] = 0;
     }
 
-    private int getFileSizeInBytes() {
-        return Integer.parseInt(System.getenv("FILE_SIZE")) * 1024 * 1024;
-    }
-
     private String getBucketName() {
         return System.getenv("BUCKET_NAME");
     }
@@ -42,7 +38,6 @@ public class S3DownloadTest implements Runnable {
         s3Client.setS3ClientOptions(S3ClientOptions.builder().setPathStyleAccess(true).build());
         final String bucketName = this.getBucketName();
         int length = 0;
-        final int actualLength = getFileSizeInBytes();
         for (int i = 0; i < iterations; i += 1) {
             final String fileName = Integer.toString(((unitNumber) * iterations + i));
             final long startTime = System.currentTimeMillis();

@@ -14,6 +14,8 @@ public class Main {
     private static final long TEST_START_TIME = System.currentTimeMillis();
     public static void main(String[] args)
             throws InterruptedException {
+        System.setProperty("com.amazonaws.services.s3.disablePutObjectMD5Validation", "true");
+        System.setProperty("com.amazonaws.services.s3.disableGetObjectMD5Validation", "true");
         final int iterations = EnvironmentManager.getIterations();
         final int threads = EnvironmentManager.getThreads();
         final long[][] totalTimes = new long[threads][iterations];
